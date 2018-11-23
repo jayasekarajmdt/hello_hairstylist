@@ -17,15 +17,12 @@ class Freelancer(models.Model):
     freelancer_contact_no = models.CharField(db_column='Freelancer_Contact_No', max_length=45)  # Field name made lowercase.
     freelancer_location = models.CharField(db_column='Freelancer_Location', max_length=100)  # Field name made lowercase.
     freelancercol = models.CharField(db_column='Freelancercol', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    task_task = models.ForeignKey('Task', models.DO_NOTHING, db_column='Task_Task_Id')  # Field name made lowercase.
-    task_job_owner_jo = models.ForeignKey('Task', models.DO_NOTHING, db_column='Task_Job_Owner_JO_Id')  # Field name made lowercase.
     freelancer_skills = models.CharField(db_column='Freelancer_Skills', max_length=200, blank=True, null=True)  # Field name made lowercase.
     freelancer_qualifications = models.CharField(db_column='Freelancer_Qualifications', max_length=200, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'freelancer'
-        unique_together = (('freelancer_id', 'task_task', 'task_job_owner_jo'),)
 
 
 class JobOwner(models.Model):
@@ -81,8 +78,9 @@ class Task(models.Model):
     task_rating = models.CharField(db_column='Task_Rating', max_length=1, blank=True, null=True)  # Field name made lowercase.
     task_review = models.CharField(db_column='Task_Review', max_length=500, blank=True, null=True)  # Field name made lowercase.
     job_owner_jo = models.ForeignKey(JobOwner, models.DO_NOTHING, db_column='Job_Owner_JO_Id')  # Field name made lowercase.
+    freelancer_freelancer = models.ForeignKey(Freelancer, models.DO_NOTHING, db_column='freelancer_Freelancer_Id')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'task'
-        unique_together = (('task_id', 'job_owner_jo'),)
+        unique_together = (('task_id', 'job_owner_jo', 'freelancer_freelancer'),)
